@@ -1,0 +1,92 @@
+# Create an enhanced HTML template for a "Word Association Image/Emoji Quiz" game.
+# This version includes more levels, a better UI, and a more structured data approach.
+
+html_content = """
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Master Asosiasi</title>
+    <style>
+        :root { --accent: #4cc9f0; --bg: #4361ee; --card: #ffffff; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: #333; display: flex; flex-direction: column; align-items: center; min-height: 100vh; margin: 0; padding: 20px; }
+        .container { background: var(--card); padding: 25px; border-radius: 25px; width: 100%; max-width: 450px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .level-badge { background: var(--accent); color: white; padding: 5px 15px; border-radius: 20px; font-weight: bold; }
+        .image-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
+        .image-box { background: #f8f9fa; border-radius: 15px; font-size: 3.5rem; padding: 20px; border: 3px solid #e9ecef; }
+        input { width: 100%; padding: 15px; border: 2px solid #ddd; border-radius: 12px; font-size: 1.1rem; box-sizing: border-box; text-align: center; margin-bottom: 15px; outline: none; }
+        input:focus { border-color: var(--bg); }
+        button { width: 100%; padding: 15px; background: var(--bg); color: white; border: none; border-radius: 12px; font-weight: bold; font-size: 1.1rem; cursor: pointer; transition: 0.2s; }
+        button:hover { background: #3a56d4; }
+        #message { margin-top: 15px; font-weight: bold; font-size: 1.1rem; height: 1.5em; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <div class="level-badge" id="levelInfo">Level 1</div>
+        <div id="diffInfo" style="font-weight:bold; color:var(--bg)">LOW</div>
+    </div>
+    
+    <div class="image-grid" id="imageGrid">
+        <div class="image-box" id="img1">🍎</div>
+        <div class="image-box" id="img2">🍌</div>
+        <div class="image-box" id="img3">🍇</div>
+        <div class="image-box" id="img4">🍊</div>
+    </div>
+    
+    <input type="text" id="answer" placeholder="Jawaban Anda..." autocomplete="off">
+    <button onclick="checkAnswer()">CEK JAWABAN</button>
+    <div id="message"></div>
+</div>
+
+<script>
+    const quizData = [
+        { lvl: 1, diff: "LOW", images: ["🍎", "🍌", "🍇", "🍊"], ans: "BUAH" },
+        { lvl: 2, diff: "LOW", images: ["❄️", "🧊", "🏔️", "🍦"], ans: "DINGIN" },
+        { lvl: 3, diff: "MEDIUM", images: ["🗝️", "🚪", "🔒", "🔑"], ans: "KUNCI" },
+        { lvl: 4, diff: "MEDIUM", images: ["🔥", "☀️", "🌋", "🌶️"], ans: "PANAS" },
+        { lvl: 5, diff: "HIGH", images: ["💤", "🛌", "🌙", "🦉"], ans: "MALAM" }
+    ];
+
+    let current = 0;
+
+    function load() {
+        const d = quizData[current];
+        document.getElementById('levelInfo').innerText = `Level ${d.lvl}`;
+        document.getElementById('diffInfo').innerText = d.diff;
+        document.getElementById('img1').innerText = d.images[0];
+        document.getElementById('img2').innerText = d.images[1];
+        document.getElementById('img3').innerText = d.images[2];
+        document.getElementById('img4').innerText = d.images[3];
+        document.getElementById('answer').value = "";
+        document.getElementById('message').innerText = "";
+    }
+
+    function checkAnswer() {
+        const val = document.getElementById('answer').value.trim().toUpperCase();
+        if (val === quizData[current].ans) {
+            document.getElementById('message').innerText = "Betul! Lanjut... 🎉";
+            document.getElementById('message').style.color = "#2a9d8f";
+            setTimeout(() => {
+                current++;
+                if (current < quizData.length) load();
+                else document.querySelector('.container').innerHTML = "<h1>Selesai! 🏆</h1><p>Otak Anda luar biasa.</p>";
+            }, 1200);
+        } else {
+            document.getElementById('message').innerText = "Kurang tepat, coba lagi! 🤔";
+            document.getElementById('message').style.color = "#e76f51";
+        }
+    }
+    load();
+</script>
+</body>
+</html>
+"""
+
+# Save to file
+with open("game_asosiasi.html", "w", encoding="utf-8") as f:
+    f.write(html_content)
